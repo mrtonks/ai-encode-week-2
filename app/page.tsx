@@ -1,113 +1,164 @@
-import Image from "next/image";
+'use client'
+
+import { useChat } from 'ai/react'
+import { useState, useRef, useEffect, MouseEventHandler } from 'react'
 
 export default function Home() {
+  const { messages, isLoading, append } = useChat()
+  const [topic, setTopic] = useState<string>('comedy')
+  const [tone, setTone] = useState<string>('sarcastic')
+  const [kind, setKind] = useState<string>('pun')
+  const [quality, setQuality] = useState<number>(1)
+
+  const handleGenerateJoke = (): void => {
+    alert('Joke generated! (not really, but pretend it did)')
+  }
+
+  const handleEvaluateJoke = (): void => {
+    alert('Joke evaluated! It was not funny.')
+  }
+  
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight
+    }
+  }, [messages])
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="container mx-auto h-screen my-5">
+      <div className="text-center mb-6">
+        <h1 className="text-3xl font-bold">Generate a Joke</h1>
+      </div>
+      <div className="flex flex-wrap md:flex-nowrap gap-4 place-content-center mx-3">
+        <div className="md:basis-1/3 basis-full flex flex-col">
+          <p className="text-gray-500 text-center mb-3 text-lg md:text-base">
+            Fill out the form below to create a custom joke.
+          </p>
+          <form className="space-y-4">
+            <div>
+              <label
+                htmlFor="topic"
+                className="block mb-2 text-sm font-medium text-gray-700">
+                Topic
+              </label>
+              <select
+                id="topic"
+                className="w-full bg-white border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}>
+                <option value="comedy">Comedy</option>
+                <option value="tragedy">Tragedy</option>
+                <option value="romance">Romance</option>
+                <option value="sci-fi">Sci-Fi</option>
+                <option value="fantasy">Fantasy</option>
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="tone"
+                className="block mb-2 text-sm font-medium text-gray-700">
+                Tone
+              </label>
+              <select
+                id="tone"
+                className="w-full bg-white border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                value={tone}
+                onChange={(e) => setTone(e.target.value)}>
+                <option value="sarcastic">Sarcastic</option>
+                <option value="serious">Serious</option>
+                <option value="silly">Silly</option>
+                <option value="heartwarming">Heartwarming</option>
+                <option value="dark">Dark</option>
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="kind"
+                className="block mb-2 text-sm font-medium text-gray-700">
+                Kind of Joke
+              </label>
+              <select
+                id="kind"
+                className="w-full bg-white border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                value={kind}
+                onChange={(e) => setKind(e.target.value)}>
+                <option value="pun">Pun</option>
+                <option value="one-liner">One-liner</option>
+                <option value="knock-knock">Knock-Knock</option>
+                <option value="shaggy-dog">Shaggy Dog</option>
+                <option value="anti-joke">Anti-Joke</option>
+              </select>
+            </div>
+            <div>
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="quality"
+                  className="block mb-2 text-sm font-medium text-gray-700">
+                  Joke Quality
+                </label>
+                <input
+                  type="text"
+                  value={quality}
+                  className="w-20 border-gray-300 rounded-md block"
+                  readOnly
+                />
+              </div>
+              <input
+                type="range"
+                id="quality"
+                min="0"
+                max="5"
+                step="0.01"
+                className="rounded-lg w-full h-2 cursor-pointer"
+                style={{
+                  backgroundImage: `linear-gradient(to right, #000 ${
+                    ((quality - 0) * 100) / (5 - 0)
+                  }%, #fff  ${((quality - 0) * 100) / (5 - 0)}%)`,
+                }}
+                value={quality}
+                onChange={(e) => setQuality(parseFloat(e.target.value))}
+              />
+            </div>
+            <button
+              type="button"
+              className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300"
+              onClick={handleGenerateJoke}>
+              Generate Joke
+            </button>
+            {!!messages.length && (
+              <button type="button" className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-gray-300"
+              onClick={handleEvaluateJoke}>
+                Evaluate Joke
+              </button>
+            )}
+          </form>
+        </div>
+        <div className="md:basis-2/3 basis-full">
+          hola
+          <div className="flex flex-col w-full h-screen max-w-md py-24 mx-auto stretch">
+            {messages.map((m) => (
+              <div
+                key={m.id}
+                className={`whitespace-pre-wrap ${
+                  m.role === 'user'
+                    ? 'bg-green-700 p-3 m-2 rounded-lg'
+                    : 'bg-slate-700 p-3 m-2 rounded-lg'
+                }`}>
+                {m.role === 'user' ? 'User: ' : 'AI: '}
+                {m.content}
+              </div>
+            ))}
+            {isLoading && (
+              <div className="flex justify-end pr-4">
+                <span className="animate-bounce">...</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
     </main>
-  );
+  )
 }

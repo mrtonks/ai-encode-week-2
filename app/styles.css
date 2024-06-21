@@ -1,0 +1,45 @@
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+  border-radius: 10px;
+  height: 10px;
+  background: #fff;
+}
+
+/* Special styling for WebKit/Blink */
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #000;
+  width: 16px;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+}
+
+/* All the same stuff for Firefox */
+input[type=range]::-moz-range-thumb {
+  height: 16px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #000;
+  width: 16px;
+  cursor: pointer;
+  margin-top: -3px;
+  transition: .2s ease-in-out;
+}
+
+/* All the same stuff for IE */
+input[type=range]::-ms-thumb {
+  height: 16px;
+  background: #fff;
+  border-radius: 10px;
+  width: 16px;
+  border: 1px solid #000;
+  cursor: pointer;
+  margin-top: -3px;
+}
