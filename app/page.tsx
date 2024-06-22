@@ -1,16 +1,26 @@
 'use client'
 
 import { useChat } from 'ai/react'
-import { useState, useRef, useEffect, MouseEventHandler } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 export default function Home() {
   const { messages, isLoading, append } = useChat()
   const [topic, setTopic] = useState<string>('comedy')
   const [tone, setTone] = useState<string>('sarcastic')
   const [kind, setKind] = useState<string>('pun')
-  const [quality, setQuality] = useState<number>(1)
+  const [temperature, setTemperature] = useState<number>(1)
+
+  const handleSetTemperature = (value : number): void => {
+    if (isNaN(value) || value < 0 || value > 5) {
+      setTemperature(0)
+      return
+    }
+
+    setTemperature(value)
+  }
 
   const handleGenerateJoke = (): void => {
+    const intructions = ``
     alert('Joke generated! (not really, but pretend it did)')
   }
 
@@ -46,7 +56,7 @@ export default function Home() {
               </label>
               <select
                 id="topic"
-                className="w-full bg-white border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="w-full bg-white border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}>
                 <option value="comedy">Comedy</option>
@@ -54,6 +64,10 @@ export default function Home() {
                 <option value="romance">Romance</option>
                 <option value="sci-fi">Sci-Fi</option>
                 <option value="fantasy">Fantasy</option>
+                <option value="work">Work</option>
+                <option value="people">People</option>
+                <option value="animals">Animals</option>
+                <option value="food">Food</option>
               </select>
             </div>
             <div>
@@ -64,7 +78,7 @@ export default function Home() {
               </label>
               <select
                 id="tone"
-                className="w-full bg-white border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="w-full bg-white border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
                 value={tone}
                 onChange={(e) => setTone(e.target.value)}>
                 <option value="sarcastic">Sarcastic</option>
@@ -72,17 +86,19 @@ export default function Home() {
                 <option value="silly">Silly</option>
                 <option value="heartwarming">Heartwarming</option>
                 <option value="dark">Dark</option>
+                <option value="witty">Witty</option>
+                <option value="goofy">Goofy</option>
               </select>
             </div>
             <div>
               <label
                 htmlFor="kind"
                 className="block mb-2 text-sm font-medium text-gray-700">
-                Kind of Joke
+                Type
               </label>
               <select
                 id="kind"
-                className="w-full bg-white border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="w-full bg-white border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
                 value={kind}
                 onChange={(e) => setKind(e.target.value)}>
                 <option value="pun">Pun</option>
@@ -90,36 +106,40 @@ export default function Home() {
                 <option value="knock-knock">Knock-Knock</option>
                 <option value="shaggy-dog">Shaggy Dog</option>
                 <option value="anti-joke">Anti-Joke</option>
+                <option value="story">Story</option>
               </select>
             </div>
             <div>
               <div className="flex items-center justify-between">
                 <label
-                  htmlFor="quality"
+                  htmlFor="temperature"
                   className="block mb-2 text-sm font-medium text-gray-700">
-                  Joke Quality
+                  Randomness
                 </label>
                 <input
-                  type="text"
-                  value={quality}
-                  className="w-20 border-gray-300 rounded-md block"
-                  readOnly
+                  type="number"
+                  value={temperature}
+                  min="0"
+                  max="5"
+                  step="0.01"
+                  className="w-20 border-gray-300 rounded-md block p-2 text-right"
+                  onChange={(e) => handleSetTemperature(parseFloat(e.target.value))}
                 />
               </div>
               <input
                 type="range"
-                id="quality"
+                id="temperature"
                 min="0"
                 max="5"
                 step="0.01"
                 className="rounded-lg w-full h-2 cursor-pointer"
                 style={{
                   backgroundImage: `linear-gradient(to right, #000 ${
-                    ((quality - 0) * 100) / (5 - 0)
-                  }%, #fff  ${((quality - 0) * 100) / (5 - 0)}%)`,
+                    ((temperature - 0) * 100) / (5 - 0)
+                  }%, #fff  ${((temperature - 0) * 100) / (5 - 0)}%)`,
                 }}
-                value={quality}
-                onChange={(e) => setQuality(parseFloat(e.target.value))}
+                value={temperature}
+                onChange={(e) => setTemperature(parseFloat(e.target.value))}
               />
             </div>
             <button
@@ -137,15 +157,15 @@ export default function Home() {
           </form>
         </div>
         <div className="md:basis-2/3 basis-full">
-          hola
-          <div className="flex flex-col w-full h-screen max-w-md py-24 mx-auto stretch">
+          <div className="flex flex-col w-full h-screen md:max-w-md pb-24 mx-auto stretch">
+            <div className="whitespace-pre-wrap bg-slate-700 p-3 my-2 rounded-lg text-white">AI: What kind of joke do you want me to tell you today?</div>
             {messages.map((m) => (
               <div
                 key={m.id}
                 className={`whitespace-pre-wrap ${
                   m.role === 'user'
-                    ? 'bg-green-700 p-3 m-2 rounded-lg'
-                    : 'bg-slate-700 p-3 m-2 rounded-lg'
+                    ? 'bg-green-700 p-3 m-2 rounded-lg text-white'
+                    : 'bg-slate-700 p-3 m-2 rounded-lg text-white'
                 }`}>
                 {m.role === 'user' ? 'User: ' : 'AI: '}
                 {m.content}
