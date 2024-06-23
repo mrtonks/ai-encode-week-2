@@ -156,20 +156,15 @@ export default function Home() {
             </button>
             {!!messages.length && (
               <button type="button" className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-gray-300"
-              onClick={async () => {
-                const response = await fetch("api/evaluate", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    message: messages[messages.length - 1].content,
-                  }),
-                });
-                const evaluation = await response.json();
-                messages.push(evaluation);
-
-              }}>
+                onClick={async () => await fetch("api/evaluate", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      message: messages[messages.length - 1].content,
+                    }),
+               })}>
                 Evaluate Joke
               </button>
             )}

@@ -23,6 +23,10 @@ export async function POST(req: Request) {
             role: 'system',
             content: 'You are a professional comedian assistant. You evaluate jokes based on given kind, topic, and tone.',
         },
+        {
+          role: 'system',
+          content: 'The user can ask you to tell an anti-joke. You should use more than 50 words but less than 150 words for this kind of jokes.',
+        },
         ...messages,
     ],
     //temperature: temperature,
