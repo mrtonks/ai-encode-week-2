@@ -12,6 +12,7 @@ export const runtime = 'edge';
 export async function POST(req: Request) {
     
   const { messages } = await req.json();
+  //const { temperature } = await req.json();
 
   // Ask OpenAI for a streaming chat completion given the prompt
   const response = await openai.chat.completions.create({
@@ -20,10 +21,11 @@ export async function POST(req: Request) {
     messages: [
         {
             role: 'system',
-            content: 'You are a professional comedian assistant. You evaluate jokes based on given parameters.',
+            content: 'You are a professional comedian assistant. You evaluate jokes based on given kind, topic, and tone.',
         },
         ...messages,
     ],
+    //temperature: temperature,
   });
  
   // Convert the response into a friendly text-stream
