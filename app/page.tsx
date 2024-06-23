@@ -20,6 +20,7 @@ export default function Home() {
   }
 
   const handleGenerateJoke = (): void => {
+    
     const intructions = ``
     alert('Joke generated! (not really, but pretend it did)')
   }
@@ -145,7 +146,12 @@ export default function Home() {
             <button
               type="button"
               className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300"
-              onClick={handleGenerateJoke}>
+              onClick={() =>
+                append({
+                  role: "user",
+                  content: 'Generate a joke',
+                })
+              }>
               Generate Joke
             </button>
             {!!messages.length && (
