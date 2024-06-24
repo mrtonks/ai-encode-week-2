@@ -5,11 +5,54 @@ import { useState, useRef, useEffect } from 'react'
 
 export default function Home() {
   const { messages, isLoading, append } = useChat()
-  const [topic, setTopic] = useState<string>('comedy')
-  const [tone, setTone] = useState<string>('sarcastic')
-  const [kind, setKind] = useState<string>('pun')
-  const [isGenerated, setIsGenerated] = useState<boolean>(false)
   const [temperature, setTemperature] = useState<number>(1)
+  const [isGenerated, setIsGenerated] = useState<boolean>(false)
+
+  const [state, setState] = useState({
+    kind: 'pun',
+    tone: 'sarcastic',
+    topic: 'comedy',
+  }); 
+
+  const handleChange = ({
+    target: { name, value },
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    setState({
+      ...state,
+      [name]: value,
+    });
+  };
+
+  const tones = [
+    { emoji: "😏", value: "sarcastic" },
+    { emoji: "😐", value: "serious" },
+    { emoji: "🤪", value: "silly" },
+    { emoji: "🤗", value: "heartwarming" },
+    { emoji: "💀", value: "dark" },
+    { emoji: "🤓", value: "witty" },
+    { emoji: "🙃", value: "goofy" },
+  ];
+
+  const topics = [
+    { emoji: "😂", value: "comedy" },
+    { emoji: "😥", value: "tragedy" },
+    { emoji: "💖", value: "romance" },
+    { emoji: "🛸", value: "sci-fi" },
+    { emoji: "🧙‍♂️", value: "fantasy" },
+    { emoji: "💼", value: "work" },
+    { emoji: "👥", value: "people" },
+    { emoji: "🐾", value: "animals" },
+    { emoji: "🍴🍲", value: "food" },
+  ];
+
+  const kinds = [
+    { emoji: "🤡", value: "pun" },
+    { emoji: "🙊", value: "one-liner" },
+    { emoji: "🚪", value: "knock-knock" },
+    { emoji: "🐶", value: "shaggy-dog" },
+    { emoji: "🎭", value: "anti-joke" },
+    { emoji: "✍", value: "story" },
+  ];
 
   const handleSetTemperature = (value : number): void => {
     if (isNaN(value) || value < 0 || value > 5) {
@@ -50,66 +93,74 @@ export default function Home() {
             Fill out the form below to create a custom joke.
           </p>
           <form className="space-y-4">
-            <div>
-              <label
-                htmlFor="topic"
-                className="block mb-2 text-sm font-medium text-gray-700">
-                Topic
-              </label>
-              <select
-                id="topic"
-                className="w-full bg-white border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
-                value={topic}
-                onChange={(e) => setTopic(e.target.value)}>
-                <option value="comedy">Comedy</option>
-                <option value="tragedy">Tragedy</option>
-                <option value="romance">Romance</option>
-                <option value="sci-fi">Sci-Fi</option>
-                <option value="fantasy">Fantasy</option>
-                <option value="work">Work</option>
-                <option value="people">People</option>
-                <option value="animals">Animals</option>
-                <option value="food">Food</option>
-              </select>
+            <div className="space-y-4 bg-opacity-25 bg-gray-700 rounded-lg p-4">
+              <h3 className="text-xl font-semibold">Topics</h3>
+
+              <div className="flex flex-wrap justify-center">
+                {topics.map(({ value, emoji }) => (
+                  <div
+                    key={value}
+                    className="p-4 m-2 bg-opacity-25 bg-gray-600 rounded-lg"
+                  >
+                    <input
+                      id={value}
+                      type="radio"
+                      name="topic"
+                      value={value}
+                      onChange={handleChange}
+                    />
+                    <label className="ml-2" htmlFor={value}>
+                      {`${emoji} ${value}`}
+                    </label>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div>
-              <label
-                htmlFor="tone"
-                className="block mb-2 text-sm font-medium text-gray-700">
-                Tone
-              </label>
-              <select
-                id="tone"
-                className="w-full bg-white border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
-                value={tone}
-                onChange={(e) => setTone(e.target.value)}>
-                <option value="sarcastic">Sarcastic</option>
-                <option value="serious">Serious</option>
-                <option value="silly">Silly</option>
-                <option value="heartwarming">Heartwarming</option>
-                <option value="dark">Dark</option>
-                <option value="witty">Witty</option>
-                <option value="goofy">Goofy</option>
-              </select>
+            <div className="space-y-4 bg-opacity-25 bg-gray-700 rounded-lg p-4">
+              <h3 className="text-xl font-semibold">Tones</h3>
+
+              <div className="flex flex-wrap justify-center">
+                {tones.map(({ value, emoji }) => (
+                  <div
+                    key={value}
+                    className="p-4 m-2 bg-opacity-25 bg-gray-600 rounded-lg"
+                  >
+                    <input
+                      id={value}
+                      type="radio"
+                      name="tone"
+                      value={value}
+                      onChange={handleChange}
+                    />
+                    <label className="ml-2" htmlFor={value}>
+                      {`${emoji} ${value}`}
+                    </label>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div>
-              <label
-                htmlFor="kind"
-                className="block mb-2 text-sm font-medium text-gray-700">
-                Type
-              </label>
-              <select
-                id="kind"
-                className="w-full bg-white border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2"
-                value={kind}
-                onChange={(e) => setKind(e.target.value)}>
-                <option value="pun">Pun</option>
-                <option value="one-liner">One-liner</option>
-                <option value="knock-knock">Knock-Knock</option>
-                <option value="shaggy-dog">Shaggy Dog</option>
-                <option value="anti-joke">Anti-Joke</option>
-                <option value="story">Story</option>
-              </select>
+            <div className="space-y-4 bg-opacity-25 bg-gray-700 rounded-lg p-4">
+              <h3 className="text-xl font-semibold">Kinds</h3>
+
+              <div className="flex flex-wrap justify-center">
+                {kinds.map(({ value, emoji }) => (
+                  <div
+                    key={value}
+                    className="p-4 m-2 bg-opacity-25 bg-gray-600 rounded-lg"
+                  >
+                    <input
+                      id={value}
+                      type="radio"
+                      name="kind"
+                      value={value}
+                      onChange={handleChange}
+                    />
+                    <label className="ml-2" htmlFor={value}>
+                      {`${emoji} ${value}`}
+                    </label>
+                  </div>
+                ))}
+              </div>
             </div>
             <div>
               <div className="flex items-center justify-between">
@@ -149,9 +200,9 @@ export default function Home() {
                 type="button"
                 className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300"
                 onClick={() =>{
-                  append( {
+                  append({
                     role: "user",
-                    content: `Generate a ${kind} joke about ${topic} in a ${tone} tone.`,
+                    content: `Generate a ${state.kind} joke about ${state.topic} in a ${state.tone} tone.`,
                   });
                   setIsGenerated(true);
                 }}>
