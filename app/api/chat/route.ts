@@ -35,7 +35,7 @@ export async function POST(req: Request) {
       {
         role: 'system',
         content:
-          'The user can ask you to tell an knock-knock joke. You should use more than 50 words but less than 150 words for this kind of jokes. Do not evaluate a pun if you are asked to generate it',
+          'The user can ask you to tell a knock-knock joke. You should use more than 50 words but less than 150 words for this kind of jokes. Do not evaluate a knock-knock joke if you are asked to generate it',
       },
       {
         role: 'system',
