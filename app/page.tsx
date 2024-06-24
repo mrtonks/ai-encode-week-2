@@ -4,9 +4,9 @@ import { useChat } from 'ai/react'
 import { useState, useRef, useEffect } from 'react'
 
 export default function Home() {
-  const { messages, isLoading, append } = useChat()
-  const [temperature, setTemperature] = useState<number>(1)
+  const [temperature, setTemperature] = useState<number>(0.75)
   const [isGenerated, setIsGenerated] = useState<boolean>(false)
+  const { messages, isLoading, append } = useChat({ body: { temperature }})
 
   const [state, setState] = useState({
     kind: 'pun',
@@ -54,8 +54,10 @@ export default function Home() {
     { emoji: '✍', value: 'story' },
   ]
 
+  const temperatureMaxValue = 2
+
   const handleSetTemperature = (value: number): void => {
-    if (isNaN(value) || value < 0 || value > 5) {
+    if (isNaN(value) || value < 0 || value > 2) {
       setTemperature(0)
       return
     }
@@ -72,6 +74,8 @@ export default function Home() {
   }
 
   const handleEvaluateJoke = (): void => {
+    // Reset temperature to get an proper evaluation
+    setTemperature(0.75)
     append({
       role: 'user',
       content: `Evaluate the following joke: ${
@@ -180,7 +184,7 @@ export default function Home() {
                   type="number"
                   value={temperature}
                   min="0"
-                  max="5"
+                  max={temperatureMaxValue}
                   step="0.01"
                   className="w-20 border-gray-300 rounded-md block p-2 text-right"
                   onChange={(e) =>
@@ -192,13 +196,13 @@ export default function Home() {
                 type="range"
                 id="temperature"
                 min="0"
-                max="5"
+                max={temperatureMaxValue}
                 step="0.01"
                 className="rounded-lg w-full h-2 cursor-pointer"
                 style={{
                   backgroundImage: `linear-gradient(to right, #000 ${
-                    ((temperature - 0) * 100) / (5 - 0)
-                  }%, #fff  ${((temperature - 0) * 100) / (5 - 0)}%)`,
+                    ((temperature - 0) * 100) / (temperatureMaxValue - 0)
+                  }%, #fff  ${((temperature - 0) * 100) / (temperatureMaxValue - 0)}%)`,
                 }}
                 value={temperature}
                 onChange={(e) => setTemperature(parseFloat(e.target.value))}
@@ -222,9 +226,9 @@ export default function Home() {
             )}
           </form>
         </div>
-        <div className="md:basis-3/5 basis-full mb-5 overflow-auto" ref={messagesContainerRef}>
+        <div className="md:basis-3/5 basis-full mb-5 md:overflow-auto" ref={messagesContainerRef}>
           <div className="flex flex-col w-full h-screen md:max-w-md pb-24 mx-auto stretch">
-            <div className="whitespace-pre-wrap bg-slate-700 p-3 m-2 rounded-lg text-white">
+            <div className="whitespace-pre-wrap bg-slate-700 p-3 my-2 rounded-lg text-white">
               AI: What kind of joke do you want me to tell you today?
             </div>
             {messages.map((m) => (
@@ -232,8 +236,8 @@ export default function Home() {
                 key={m.id}
                 className={`whitespace-pre-wrap ${
                   m.role === 'user'
-                    ? 'bg-green-700 p-3 m-2 rounded-lg text-white'
-                    : 'bg-slate-700 p-3 m-2 rounded-lg text-white'
+                    ? 'bg-green-700 p-3 my-2 rounded-lg text-white'
+                    : 'bg-slate-700 p-3 my-2 rounded-lg text-white'
                 }`}>
                 {m.role === 'user' ? 'User: ' : 'AI: '}
                 {m.content}
