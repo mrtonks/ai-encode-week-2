@@ -18,6 +18,8 @@ Obtain an OpenAI key and run the following command
 export OPENAI_API_KEY=<your_key>
 ```
 
+Clone the repository for [Text generation UI](https://github.com/oobabooga/text-generation-webui) and run it. Go to the Session tab, select the `openai` extension and the boolean command-line flag for `api`. Then, on the Models tab, download and load a model.
+
 ### How to start
 
 First, run the development server:
