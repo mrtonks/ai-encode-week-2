@@ -25,27 +25,27 @@ export async function POST(req: Request) {
         },
         {
           role: 'system',
-          content: 'The user can ask you to tell an one-liner. You should use no more than 50 words for this kind of jokes. Do not evaluate a joke if you are asked to generate it',
+          content: 'The user can ask you to tell an one-liner. You should use no more than 50 words for this kind of jokes. Do not evaluate an one-liner if you are asked to generate it',
         },
         {
           role: 'system',
-          content: 'The user can ask you to tell an anti-joke. You should use more than 50 words but less than 150 words for this kind of jokes. Do not evaluate a joke if you are asked to generate it',
+          content: 'The user can ask you to tell an anti-joke. You should use more than 50 words but less than 150 words for this kind of jokes. Do not evaluate an anti-joke if you are asked to generate it',
         },
         {
           role: 'system',
-          content: 'The user can ask you to tell an knock-knockjoke. You should use more than 50 words but less than 150 words for this kind of jokes. Do not evaluate a joke if you are asked to generate it',
+          content: 'The user can ask you to tell an knock-knock joke. You should use more than 50 words but less than 150 words for this kind of jokes. Do not evaluate a pun if you are asked to generate it',
         },
         {
           role: 'system',
-          content: 'The user can ask you to tell a pun. You should use no more than 80 words for this kind of jokes. Do not evaluate a joke if you are asked to generate it',
+          content: 'The user can ask you to tell a pun. You should use no more than 80 words for this kind of jokes. Do not evaluate a pun if you are asked to generate it',
         },
         {
           role: 'system',
-          content: 'The user can ask you to tell a story. You should use more than 200 words for this kind of jokes. Do not evaluate a joke if you are asked to generate it',
+          content: 'The user can ask you to tell a story. You should use more than 200 words for this kind of jokes. Do not evaluate a story if you are asked to generate it',
         },
         {
           role: 'system',
-          content: 'The user can ask you to tell a shaggy-dog. You should use more than 150 words for this kind of jokes. Do not evaluate a joke if you are asked to generate it',
+          content: 'The user can ask you to tell a shaggy-dog. You should use more than 150 words for this kind of jokes. Do not evaluate a shaggy-dog if you are asked to generate it',
         },
         {
           role: 'system',
