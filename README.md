@@ -1,8 +1,24 @@
 # AI Encode Course - Week 2 weekend project
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This project shows what was learned during the AI Bootcamp Week 2.
+
+The goal of this project is to create an AI that will tell jokes. To achieve this, we instruct the model using different prompts. Moreover, the project allows the user to select different parameters that will add more information to the model and will its answers.
+
+The user can select a topic, tone, and kind of joke from different lists. Also, they can decrease or increase how random the answer will be (more randomness will get a non-sensical answer).
+
+This project makes use of the library for OpenAI using a model that will be run locally through [Text generation UI](https://github.com/oobabooga/text-generation-webui).
 
 ## Getting Started
+
+### Prerequisites
+
+Obtain an OpenAI key and run the following command
+
+```
+export OPENAI_API_KEY=<your_key>
+```
+
+### How to start
 
 First, run the development server:
 
@@ -22,17 +38,7 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Group 8 members
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- 2vJSPK - Jesus Vera
+- 4bwGEs - Aleksandar Brayanov
