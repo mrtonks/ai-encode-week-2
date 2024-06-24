@@ -21,11 +21,19 @@ export async function POST(req: Request) {
     messages: [
         {
             role: 'system',
-            content: 'You are a professional comedian assistant. You evaluate jokes based on given kind, topic, and tone.',
+            content: 'You are a professional comedian assistant. You generate a joke based on given kind, topic, and tone. Do not evaluate a joke if you are asked to generate it.',
         },
         {
           role: 'system',
-          content: 'The user can ask you to tell an anti-joke. You should use more than 50 words but less than 150 words for this kind of jokes.',
+          content: 'The user can ask you to tell an one liner. You should use no more than 50 words for this kind of jokes. Do not evaluate a joke if you are asked to generate it',
+        },
+        {
+          role: 'system',
+          content: 'The user can ask you to tell an anti-joke. You should use more than 50 words but less than 150 words for this kind of jokes. Do not evaluate a joke if you are asked to generate it',
+        },
+        {
+          role: 'system',
+          content: 'The user can ask you to evaluate a joke. You should tell the user if the joke is funny or not, appropriated or not, and offensive or not. Do not evaluate a joke if you are asked to generate it',
         },
         ...messages,
     ],

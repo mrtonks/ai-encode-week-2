@@ -8,6 +8,7 @@ export default function Home() {
   const [topic, setTopic] = useState<string>('comedy')
   const [tone, setTone] = useState<string>('sarcastic')
   const [kind, setKind] = useState<string>('pun')
+  const [isGenerated, setIsGenerated] = useState<boolean>(false)
   const [temperature, setTemperature] = useState<number>(1)
 
   const handleSetTemperature = (value : number): void => {
@@ -143,28 +144,29 @@ export default function Home() {
                 onChange={(e) => setTemperature(parseFloat(e.target.value))}
               />
             </div>
-            <button
-              type="button"
-              className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300"
-              onClick={() =>
-                append( {
-                  role: "user",
-                  content: `Generate a ${kind} joke about ${topic} in a ${tone} tone.`,
-                })
-              }>
-              Generate Joke
-            </button>
-            {!!messages.length && (
+            { !isGenerated && (
+              <button
+                type="button"
+                className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300"
+                onClick={() =>{
+                  append( {
+                    role: "user",
+                    content: `Generate a ${kind} joke about ${topic} in a ${tone} tone.`,
+                  });
+                  setIsGenerated(true);
+                }}>
+                Generate Joke
+              </button>
+            )}
+            {!!messages.length && !isLoading && isGenerated && (
               <button type="button" className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-gray-300"
-                onClick={async () => await fetch("api/evaluate", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      message: messages[messages.length - 1].content,
-                    }),
-               })}>
+                onClick= {() => {
+                  append( {
+                    role: "user",
+                    content: `Evaluate the following joke: ${messages[messages.length - 1].content}`,
+                  });
+                  setIsGenerated(false);
+                }}>
                 Evaluate Joke
               </button>
             )}
